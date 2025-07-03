@@ -69,7 +69,8 @@ async def app(scope, receive, send):
         custom_message_provided = False
         if scope["method"] == "POST":
             body_bytes = b''
-            async for message_part in receive:
+            while True:
+                message_part = await receive()
                 if message_part['type'] == 'http.request':
                     body_bytes += message_part.get('body', b'')
                     if not message_part.get('more_body', False):
